@@ -247,6 +247,8 @@
   
       }
   
+      positionPlayButton()
+  
     }
   
     // Toggle Mode
@@ -259,9 +261,65 @@
   
     })
   
+    // wrap video
+  
+    $("video").each(function(){
+  
+      $(this).wrap('<div class="videoWrap"></div>')
+      $(this).before('<div class="videoPlay">▶</div>')
+    })
+  
+    // position play button
+  
+    function positionPlayButton(){
+      $(".videoWrap").each(function(){
+        var savedThis = $(this)
+        setTimeout(function(){ 
+          savedThis.find('.videoPlay').css({
+            'height':savedThis.find('video').outerHeight()+'px',
+            'line-height':savedThis.find('video').outerHeight()+'px',
+            'opacity':'1'
+  
+          })
+        }, 500);
+        
+      })
+    }
+  
+    var delay = (function(){
+      var timer = 0;
+      return function(callback, ms){
+        clearTimeout (timer);
+        timer = setTimeout(callback, ms);
+      };
+    })();
+    Usage:
+  
+    $(window).resize(function() {
+        $('.videoPlay').css({'opacity':'0'})
+        delay(function(){
+        positionPlayButton()
+          
+          //...
+        }, 500);
+    });
+  
+  
+    positionPlayButton()
+  
+  
+    // Make video play on click .videoPlay
+  
+      $(document).on('click','.videoPlay',function(){
+        $(this).next('video').click()
+        
+        $(this).remove()
+      })
   
     // Make video play on click
       $("video").click(function(e){
+  
+          $(this).prev('.videoPlay').remove()
   
           $(this).attr("controls","controls")
   
@@ -289,10 +347,45 @@
       })
   
   
-  })
+    })
   
     </script>
-    <style id='a'>
+  <style id='a'>
+  
+  .videoWrap{
+    border: 0px;
+    -webkit-box-shadow: 0px 0px 0px 0px #545454;
+    -moz-box-shadow: 0px 0px 0px 0px #545454;
+    box-shadow: 0px 0px 0px 0px #545454;
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+    cursor: pointer;
+  }
+  
+  .videoPlay{
+    border: 0px;
+    opacity: 0;
+    position: absolute;
+    -webkit-box-shadow: 0px 0px 0px 0px #545454;
+    -moz-box-shadow: 0px 0px 0px 0px #545454;
+    box-shadow: 0px 0px 0px 0px #545454;
+    padding: 0px;
+    margin: 0px;
+    background-color: transparent;
+    width: calc(50% - 10px);
+    /*width: calc(70% - 20px);*/
+    text-align: center;
+    margin-top: 10px;
+      -webkit-user-select: none;  /* Chrome all / Safari all */
+    -moz-user-select: -moz-none;     /* Firefox all */
+    -ms-user-select: none;      /* IE 10+ */
+    user-select: none;          /* Likely future */     
+    transition: opacity 0.5s;
+    font-size: 72px;
+    margin-right: -10px;
+  
+  }
   
   .figureInside{
     margin: 8px !important;
@@ -679,11 +772,11 @@
     -moz-box-shadow: 2px 2px 0px 0px black;
     box-shadow: 2px 2px 0px 0px black;
     border: 1px solid black;
-    background: transparent url('./html/videopostera.svg') 50% 50% / cover no-repeat ;
+    background: transparent;
   }
   
   video:hover {
-    background: transparent url('./html/videopostera_hover.svg') 50% 50% / cover no-repeat;
+    background: transparent;
   }
   
   .figure {
@@ -955,6 +1048,14 @@
   
   @media only screen and (max-width: 1024px){
   
+  
+  .videoPlay{
+  
+    width: calc(70% - 20px);
+  
+  
+  }
+  
     .level1,
     .infobox,
     .linkbox,
@@ -1083,6 +1184,41 @@
   }
   </style>
   <style id='b'>
+  
+  .videoWrap{
+    border: 0px;
+    -webkit-box-shadow: 0px 0px 0px 0px #545454;
+    -moz-box-shadow: 0px 0px 0px 0px #545454;
+    box-shadow: 0px 0px 0px 0px #545454;
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+    cursor: pointer;
+  }
+  
+  .videoPlay{
+    border: 0px;
+    opacity: 0;
+    position: absolute;
+    -webkit-box-shadow: 0px 0px 0px 0px #545454;
+    -moz-box-shadow: 0px 0px 0px 0px #545454;
+    box-shadow: 0px 0px 0px 0px #545454;
+    padding: 0px;
+    margin: 0px;
+    background-color: transparent;
+    /*width: calc(70% - 20px);*/
+    text-align: center;
+      -webkit-user-select: none;  /* Chrome all / Safari all */
+    -moz-user-select: -moz-none;     /* Firefox all */
+    -ms-user-select: none;      /* IE 10+ */
+    user-select: none;          /* Likely future */     
+    transition: opacity 0.5s;
+    font-size: 72px;
+    margin-right: -10px;
+      margin-left: 35%;
+      width: 30%;
+  
+  }
   
   .highlightThis h1{
     color: #FAF8F4 !important;
@@ -1556,11 +1692,11 @@
     -webkit-box-shadow: 2px 2px 0px 0px #545454;
     -moz-box-shadow: 2px 2px 0px 0px #545454;
     box-shadow: 2px 2px 0px 0px #545454;
-    background: transparent url('./html/videoposterb.svg') 50% 50% / cover no-repeat ;
+    background: transparent ;
   }
   
   video:hover {
-    background: transparent url('./html/videoposterb_hover.svg') 50% 50% / cover no-repeat ;
+    background: transparent;
   }
   
   /**/
@@ -1705,6 +1841,12 @@
       margin-left: 37%;
     }
   
+    .videoPlay{
+        margin-left: 37%;
+        width: 25%;
+    }
+  
+  
   }
   
   @media only screen and (max-width : 1280px) {
@@ -1739,6 +1881,12 @@
       width: 35%;
       margin-left: 32%;
     }
+  
+    .videoPlay{
+        margin-left: 32%;
+        width: 35%;
+    }
+  
   
   }
   
@@ -1918,10 +2066,7 @@ How To Standard Title
 <p>For more information about the Workflow and creating output for print files, visit the PublishingLab <a href="http://www.publishinglab.nl/resources/hybrid-publishing-workflow-faq/">site</a>.</p>
 <p>You will find instructions &amp; a template for making an ePub3, use css styles to modify your layout, and learn about the pros &amp; cons of a fixed layout ePub. Finally, we look at what some other current options are for digital publishing.</p>
 <p>Sections:</p>
-<p>1. How to create an ePub<br />
-2. Styling ePubs<br />
-3. Fixed layout ePubs<br />
-4. Other digital publishing options</p>
+<p>1. How to create an ePub<br />2. Styling ePubs<br />3. Fixed layout ePubs<br />4. Other digital publishing options</p>
 <div class="infobox">
 <h3 id="who-is-this-how-to-for">Who is this How To for?</h3>
 <p>Small publishers, arts publishers, designers and developers creating digital publications.</p>
@@ -2029,7 +2174,7 @@ href="http://en.flossmanuals.net/command-line/getting-started/">here</a>.</p>
 <p>You can use the <a href="http://validator.idpf.org/">online validator</a> for smaller ePubs (under 10MB)</p>
 <p>The validator will show you where the errors are in your book. See the example below:</p>
 <div class="figure">
-<img src="lib/idpf-validator.png" alt="" />
+<img src="lib/idpf-validator.png" />
 
 </div>
 <p>The error occurs in chapter ch002.xhtml, line 47, there's an explanation that a 'referenced resource is missing', but it helps a lot to edit the book in <a href="http://calibre-ebook.com/download">Calibre</a> and further diagnose that in this case an image is missing.</p>
@@ -2128,7 +2273,7 @@ Amazon and Apple are the paper‑makers, the typographers, the printers, the bin
 <h3>The experiment(s)</h3>
 <p>To demonstrate, I created a fixed layout epub in InDD CC 2015. It didn't take much time to file &gt; export fixed layout, and the pros are that it retains my weird text wrap, and the caption over the video. Since I wrote about the display in the cons section above, I thought I'd also show what it looks like - not just tell. When viewed in iBooks, changing the width of the viewport (screen) does not change the size of the text and it is only suitable for viewing on an ipad.</p>
 <div class="figure">
-<img src="lib/iphone4s-300x230.jpg" alt="" />
+<img src="lib/iphone4s-300x230.jpg" />
 
 </div>
 <p>Fixed layout viewed on iPhone4s</p>
@@ -2161,7 +2306,7 @@ href="https://vimeo.com/25185473">Kadath</a>, by Walrus Studio, which includes c
 <p>Read more about the project <a
 href="http://www.publishinglab.nl/unstudio/">here</a>.</p>
 <div class="figure">
-<img src="lib/menu-UNStudio.jpg" alt="" />
+<img src="lib/menu-UNStudio.jpg" />
 
 </div>
 <p>The team created a custom menu for the book:</p>
@@ -2169,7 +2314,7 @@ href="http://www.publishinglab.nl/unstudio/">here</a>.</p>
 <p>Since this App was specifically designed for an iPad, it could capitalise on the built-in functions of the iPad, like swiping to the next chapter.</p>
 <p>PublishingLab collaborated with the Institute of Network Cultures to create a web platform for reading the latest Theory on Demand publication.</p>
 <div class="figure">
-<img src="lib/video-scroll.gif" alt="" />
+<img src="lib/video-scroll.gif" />
 
 </div>
 <video poster="./html/background.png">
@@ -2184,14 +2329,14 @@ href="http://www.publishinglab.nl/unstudio/">here</a>.</p>
 <h3>Example 2:</h3>
 <p>Navigating Theory on Demand: an online reading experience of TOD17 GrayZones</p>
 <div class="figure">
-<img src="lib/NavigatingTOD-tools.png" alt="" />
+<img src="lib/NavigatingTOD-tools.png" />
 
 </div>
 <p>PublishingLab collaborated with the Institute of Network Cultures to create a web platform for reading the latest Theory on Demand publication. The previous outputs for Theory on Demand has been print on demand and ePub formats, but the team saw an opportunity to improve the accessibility of the content and navigation design in html.</p>
 <p>Their site layout included a Table of Contents and expandable tools panel.</p>
 <p>They incorporated various functions to make it easier to search, highlight and cite the content of the book in the browser. See the citation function in the tools panel:</p>
 <div class="figure">
-<img src="lib/NavigatingTOD-cite.png" alt="" />
+<img src="lib/NavigatingTOD-cite.png" />
 
 </div>
 <p>Read more about the project <a
